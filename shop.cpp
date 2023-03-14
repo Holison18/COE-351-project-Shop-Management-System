@@ -69,7 +69,7 @@ void employee_funct(){
     cout<<"\n\t\t\t\t\t1. Register new employee"<<endl;
     cout<<"\t\t\t\t\t2. Check products"<<endl;
     cout<<"\t\t\t\t\t3. Buy from dealer"<<endl;
-    cout<<"\n\t\t\t\t\t4. Sales";
+    cout<<"\t\t\t\t\t4. Sales";
     cout<<"\n\t\t\t\t\tEnter an option: ";
 
     // take input from user
@@ -89,6 +89,7 @@ void employee_funct(){
         cout<<"Position/Occupation: ";
         cin>>emp_pos;
         emp.register_employee(emp_firstname,emp_lastname, emp_id, pass, emp_pos);
+        
     }
     else if(response==2){
         // check products
