@@ -32,12 +32,25 @@ class employee{
     }
     void check_products(){
         // staff can check products
+        // read from file
+
+        fstream file;
+        file.open("products.txt", ios::in);
+        string line;
+        while(getline(file, line)){
+            cout<<line<<endl;
+        }
+        file.close();
+
     }
 
-    void buy_from_dealer(){
+    void add_product(string product_id, string product_name, string product_price, string product_quantity){
         // staff can buy products from dealer
-    }
-
+        // bought products need to be add to the product list
+        // read from file
+        fstream file;
+        // open file add new product
+        file.open("products.txt", ios::out | ios::app);
     
 };
 
@@ -107,7 +120,17 @@ void employee_funct(){
     }
     else if(response==3){
         // buy from dealer
-        emp.buy_from_dealer();
+        string product_id, product_name, product_price, product_quantity;
+        cout<<"Enter product details to add to the list"<<endl;
+        cout<<"Product Id: ";
+        cin>>product_id;
+        cout<<"Product Name: ";
+        cin>>product_name;
+        cout<<"Product Price: ";
+        cin>>product_price;
+        cout<<"Product Quantity: ";
+        cin>>product_quantity;
+        emp.add_product(product_id, product_name, product_price, product_quantity);
     }
     else if(response==4){
         // sales
