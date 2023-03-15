@@ -76,6 +76,11 @@ int main(){
     if(option==1){
         // staff
         employee_funct();
+    }else if(option==2){
+        // customer
+        // customer();
+    }else{
+        cout<<"\n\t\t\t\t\tInvalid option"<<endl;
     }
 
 }
@@ -91,7 +96,7 @@ void employee_funct(){
 
     cout<<"\n\t\t\t\t\t1. Register new employee"<<endl;
     cout<<"\t\t\t\t\t2. Check products"<<endl;
-    cout<<"\t\t\t\t\t3. Buy from dealer"<<endl;
+    cout<<"\t\t\t\t\t3. Add Product"<<endl;
     cout<<"\t\t\t\t\t4. Sales";
     cout<<"\n\t\t\t\t\tEnter an option: ";
 
@@ -113,14 +118,13 @@ void employee_funct(){
         cin>>emp_pos;
         emp.register_employee(emp_firstname,emp_lastname, emp_id, pass, emp_pos);
         
-    }
-    else if(response==2){
+    }else if(response==2){
         // check products
         emp.check_products();
-    }
-    else if(response==3){
+    }else if(response==3){
         // buy from dealer
         string product_id, product_name, product_price, product_quantity;
+
         cout<<"Enter product details to add to the list"<<endl;
         cout<<"Product Id: ";
         cin>>product_id;
@@ -131,36 +135,34 @@ void employee_funct(){
         cout<<"Product Quantity: ";
         cin>>product_quantity;
         emp.add_product(product_id, product_name, product_price, product_quantity);
-    }
-    else if(response==4){
+    } else if(response==4){
         // sales
-    }
-    else{
+    }else{
         cout<<"\n\t\t\t\t\tInvalid option"<<endl;
     }
 }
 
-void customer(){
-    // customer can buy from the show 
-    // customer can view products to make a purchase 
-    // customer can search a product
-    int response;
-    cout<<"\t\t\t\tCustomer"<<endl;
-    cout<<"\t\t\t\t----------"<<endl;
-    cout<<"\t\t\t\t1. View product list"<<endl;
-    cout<<"\t\t\t\t2.Search product"<<endl;
+// void customer(){
+//     // customer can buy from the show 
+//     // customer can view products to make a purchase 
+//     // customer can search a product
+//     int response;
+//     cout<<"\t\t\t\tCustomer"<<endl;
+//     cout<<"\t\t\t\t----------"<<endl;
+//     cout<<"\t\t\t\t1. View product list"<<endl;
+//     cout<<"\t\t\t\t2.Search product"<<endl;
 
-    //take response from user
-    cin>>response;
-    system("clear");
+//     //take response from user
+//     cin>>response;
+//     system("clear");
 
-    if(response==1){
-        // view product list
-    }
-    else if(response==2){
-        // search product
-    }
-    else{
-        cout<<"\n\t\t\t\t\tInvalid option"<<endl;
-    }
-}
+//     // if(response==1){
+//     //     // view product list
+//     // }
+//     // else if(response==2){
+//     //     // search product
+//     // }
+//     // else{
+//     //     cout<<"\n\t\t\t\t\tInvalid option"<<endl;
+//     // }
+// }
