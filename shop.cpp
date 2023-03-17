@@ -92,16 +92,16 @@ class employee{
 int main(){
     // shop management system
     int option;
-    sleep(1);
+    sleep(.5);
     cout<<"\n\n\t\t\t\tWelcome to shop management system"<<endl;
-    sleep(1);
+    sleep(.5);
     cout<<"\t\t\t\t--------------------------------"<<endl;
-    sleep(1);
-    cout<<"\t\t\t\t\t1. Staff"<<endl;
-    sleep(1);
-    cout<<"\t\t\t\t\t2. Customer"<<endl;
-    sleep(1);
-    cout<<"\n\t\t\t\t\tEnter an option: ";
+    sleep(.5);
+    cout<<"\n\n1. Staff"<<endl;
+    sleep(.5);
+    cout<<"2. Customer"<<endl;
+    sleep(.5);
+    cout<<"Enter an option: ";
 
     //take input from user
     cin>>option;
@@ -129,16 +129,18 @@ void funct_emp(){
     cout<<"\t\t\t\t\tStaff"<<endl;
     cout<<"\t\t\t\t\t------"<<endl;
 
-    sleep(1);
-    cout<<"\n\t\t\t\t\t1. Register new employee"<<endl;
-    sleep(1);
-    cout<<"\t\t\t\t\t2. Check products"<<endl;
-    sleep(1);
-    cout<<"\t\t\t\t\t3. Add Product"<<endl;
-    sleep(1);
-    cout<<"\t\t\t\t\t4. Sales"<<endl;
-    sleep(1);
-    cout<<"\n\t\t\t\t\tEnter an option: ";
+    sleep(.5);
+    cout<<"\n\n1. Register new employee"<<endl;
+    sleep(.5);
+    cout<<"2. Check products"<<endl;
+    sleep(.5);
+    cout<<"3. Add Product"<<endl;
+    sleep(.5);
+    cout<<"4. Sales"<<endl;
+    sleep(.5);
+    cout<<"5. Main Menu"<<endl;
+    sleep(.5);
+    cout<<"\nEnter an option: ";
 
     // take input from user
     cin>>response;
@@ -172,24 +174,30 @@ void funct_emp(){
         // buy from dealer
         string product_id, product_name, product_price, product_quantity;
         
-        sleep(1);
+        sleep(.5);
         cout<<"Enter product details to add to the list"<<endl;
-        sleep(1);
+        sleep(.5);
         cout<<"Product Id: ";
         cin>>product_id;
-        sleep(1);
+        sleep(.5);
         cout<<"Product Name: ";
         cin>>product_name;
-        sleep(1);
+        sleep(.5);
         cout<<"Product Price: ";
         cin>>product_price;
-        sleep(1);
+        sleep(.5);
         cout<<"Product Quantity: ";
         cin>>product_quantity;
         emp.add_product(product_id, product_name, product_price, product_quantity);
     } else if(response==4){
         // sales
         emp.sales();
+    }else if(response==5){
+        // exit
+        cout<<"Press any key to go to the main menu";
+        cin.ignore();
+        system("clear");
+        main();
     }else{
         cout<<"\n\t\t\t\t\tInvalid option"<<endl;
     }
@@ -202,8 +210,9 @@ void customer(){
     int response;
     cout<<"\t\t\t\tCustomer"<<endl;
     cout<<"\t\t\t\t----------"<<endl;
-    cout<<"\t\t\t\t1.Search product"<<endl;
-
+    cout<<"1.Search product"<<endl;
+    cout<<"2.Exit"<<endl;
+    cout<<"Enter an option: ";
     //take response from user
     cin>>response;
     system("clear");
@@ -230,9 +239,9 @@ void customer(){
         // the product will be added to the sales file
         // the product quantity will be reduced from the product file
         // the customer will be given a receipt
-        cout<<"\t\t\t\t\t1. Buy product"<<endl;
-        cout<<"\t\t\t\t\t2. Exit"<<endl;
-        cout<<"\t\t\t\t\tEnter an option: ";
+        cout<<"1. Buy product"<<endl;
+        cout<<"2. Exit"<<endl;
+        cout<<"Enter an option: ";
         cin>>response;
         system("clear");
         if(response==1){
@@ -275,10 +284,14 @@ void customer(){
 
         }else if(response==2){
             // exit
+            system("clear");
             cout<<"Exiting..."<<endl;
+            cin.ignore();
+            main();
         }
     }else{
-        cout<<"\n\t\t\t\t\tInvalid option"<<endl;
+        cout<<"Invalid option"<<endl;
+        customer();
     }
    
 }

@@ -1,1 +1,2 @@
 adfad,Kube,665,5
+hdsss,Rice,100,20
