@@ -11,6 +11,9 @@ void funct_emp();
 // declare customer function
 void customer();
 
+// declare a function to generate a random employee id
+string employee_id();
+
 class employee{
 
     private:
@@ -66,6 +69,20 @@ class employee{
         file.close();
 
         cout << "Product added successfully." << endl;
+    }
+
+    void sales(){
+        float daily_sales = 0;
+        // staff can check daily sales
+        // read from file
+        fstream file;
+        file.open("sales.txt", ios::in);
+        string line;
+        while(getline(file, line)){
+            cout<<line<<endl;
+        }
+        file.close();
+        
     }
 };
 
@@ -129,15 +146,17 @@ void funct_emp(){
     if(response==1){
         // register new employee
         string emp_firstname,emp_lastname, emp_id, pass, emp_pos;
+
+        // get employee details
+        // generate a random employee id
+
+        emp_id = employee_id();
         sleep(1);
         cout<<"First Name: ";
         cin>>emp_firstname;
         sleep(1);
         cout<<"Last Name: ";
         cin>>emp_lastname;
-        sleep(1);
-        cout<<"Id: ";
-        cin>>emp_id;
         sleep(1);
         cout<<"Password: ";
         cin>>pass;
@@ -170,6 +189,7 @@ void funct_emp(){
         emp.add_product(product_id, product_name, product_price, product_quantity);
     } else if(response==4){
         // sales
+        emp.sales();
     }else{
         cout<<"\n\t\t\t\t\tInvalid option"<<endl;
     }
@@ -182,22 +202,95 @@ void customer(){
     int response;
     cout<<"\t\t\t\tCustomer"<<endl;
     cout<<"\t\t\t\t----------"<<endl;
-    cout<<"\t\t\t\t1. View product list"<<endl;
-    cout<<"\t\t\t\t2.Search product"<<endl;
+    cout<<"\t\t\t\t1.Search product"<<endl;
 
     //take response from user
     cin>>response;
     system("clear");
 
     if(response==1){
-        // view product list
-        cout<<"\t\t\t\tProduct List"<<endl;
-    }
-    else if(response==2){
         // search product
         cout<<"\t\t\t\tSearch Product"<<endl;
-    }
-    else{
+        cout<<"\t\t\t\t--------------"<<endl;
+        string product_name;
+        cout<<"Enter product name: ";
+        cin>>product_name;
+        // read from file
+        fstream file;
+        file.open("products.txt", ios::in);
+        string line;
+        while(getline(file, line)){
+            if(line.find(product_name) != string::npos){
+                cout<<line<<endl;
+            }
+        }
+        file.close();
+        
+        // now the customer can buy the product
+        // the product will be added to the sales file
+        // the product quantity will be reduced from the product file
+        // the customer will be given a receipt
+        cout<<"\t\t\t\t\t1. Buy product"<<endl;
+        cout<<"\t\t\t\t\t2. Exit"<<endl;
+        cout<<"\t\t\t\t\tEnter an option: ";
+        cin>>response;
+        system("clear");
+        if(response==1){
+            // buy product
+            // read from file
+            fstream file;
+            file.open("products.txt", ios::in);
+            string line;
+            while(getline(file, line)){
+                if(line.find(product_name) != string::npos){
+                    cout<<line<<endl;
+                }
+            }
+            file.close();
+            // get product details
+            string product_id, product_price, product_quantity;
+            cout<<"Enter product id: ";
+            cin>>product_id;
+            cout<<"Enter product price: ";
+            cin>>product_price;
+            cout<<"Enter product quantity: ";
+            cin>>product_quantity;
+            // write to file
+            fstream another_file;
+            another_file.open("sales.txt", ios::app);
+            another_file<< product_id << "," << product_name << "," << product_price << "," << product_quantity << endl;
+            another_file.close();
+            cout<<"Product bought successfully"<<endl;
+            system("clear");
+
+            // print receipt for user
+            cout<<"Receipt"<<endl;
+            cout<<"-------"<<endl;
+            cout<<"Product Id: "<<product_id<<endl;
+            cout<<"Product Name: "<<product_name<<endl;
+            cout<<"Product Price: "<<product_price<<endl;
+            cout<<"Product Quantity: "<<product_quantity<<endl;
+            cout<<"Total: "<<stoi(product_price) * stoi(product_quantity)<<endl;
+            cout<<"Thank you for shopping with us"<<endl;
+
+        }else if(response==2){
+            // exit
+            cout<<"Exiting..."<<endl;
+        }
+    }else{
         cout<<"\n\t\t\t\t\tInvalid option"<<endl;
     }
+   
 }
+
+string employee_id(){
+    // this function generates a random employee id to assigned to each employee
+    // the id is a digit of 3 + the initials of the employee's name
+    // the initials are the first letter of the first name and the first letter of the last name
+
+    // generate a random number
+    int random_number = rand() % 1000 + 1;
+    string emp_id = to_string(random_number);
+    return emp_id;
+}
+
