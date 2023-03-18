@@ -129,78 +129,95 @@ void funct_emp(){
     cout<<"\t\t\t\t\tStaff"<<endl;
     cout<<"\t\t\t\t\t------"<<endl;
 
-    sleep(.5);
-    cout<<"\n\n1. Register new employee"<<endl;
-    sleep(.5);
-    cout<<"2. Check products"<<endl;
-    sleep(.5);
-    cout<<"3. Add Product"<<endl;
-    sleep(.5);
-    cout<<"4. Sales"<<endl;
-    sleep(.5);
-    cout<<"5. Main Menu"<<endl;
-    sleep(.5);
-    cout<<"\nEnter an option: ";
+    // employee can login
+    string emp_id, emp_pass;
+    cout<<"Enter employee id: ";
+    cin>>emp_id;
+    cout<<"Enter password: ";
+    cin>>emp_pass;
 
-    // take input from user
-    cin>>response;
-    system("clear");
-    if(response==1){
-        // register new employee
-        string emp_firstname,emp_lastname, emp_id, pass, emp_pos;
-
-        // get employee details
-        // generate a random employee id
-
-        emp_id = employee_id();
-        sleep(1);
-        cout<<"First Name: ";
-        cin>>emp_firstname;
-        sleep(1);
-        cout<<"Last Name: ";
-        cin>>emp_lastname;
-        sleep(1);
-        cout<<"Password: ";
-        cin>>pass;
-        sleep(1);
-        cout<<"Position/Occupation: ";
-        cin>>emp_pos;
-        emp.register_employee(emp_firstname,emp_lastname, emp_id, pass, emp_pos);
-        
-    }else if(response==2){
-        // check products
-        emp.check_products();
-    }else if(response==3){
-        // buy from dealer
-        string product_id, product_name, product_price, product_quantity;
-        
-        sleep(.5);
-        cout<<"Enter product details to add to the list"<<endl;
-        sleep(.5);
-        cout<<"Product Id: ";
-        cin>>product_id;
-        sleep(.5);
-        cout<<"Product Name: ";
-        cin>>product_name;
-        sleep(.5);
-        cout<<"Product Price: ";
-        cin>>product_price;
-        sleep(.5);
-        cout<<"Product Quantity: ";
-        cin>>product_quantity;
-        emp.add_product(product_id, product_name, product_price, product_quantity);
-    } else if(response==4){
-        // sales
-        emp.sales();
-    }else if(response==5){
-        // exit
-        cout<<"Press any key to go to the main menu";
-        cin.ignore();
-        system("clear");
-        main();
-    }else{
-        cout<<"\n\t\t\t\t\tInvalid option"<<endl;
+    // check if the employee id and password are in the employee.txt file
+    fstream file;
+    file.open("employee.txt", ios::in);
+    string line;
+    while(getline(file, line)){
+        if(line.find(emp_id) != string::npos && line.find(emp_pass) != string::npos){
+            cout<<"Login successful"<<endl;
+            sleep(.5);
+            system("clear");
+            
+            cout<<"1. Register new employee"<<endl;
+            cout<<"2. Check products"<<endl;
+            cout<<"3. Buy products"<<endl;
+            cout<<"4. Sales"<<endl;
+            cout<<"5. Exit"<<endl;
+            cout<<"Enter an option: ";
+            cin>>response;
+            system("clear");
+            if(response==1){
+                // register new employee
+                string emp_firstname, emp_lastname, emp_id, pass, emp_pos;
+                cout<<"\t\t\t\tRegister new employee"<<endl;
+                cout<<"\t\t\t\t---------------------"<<endl;
+                cout<<"Enter first name: ";
+                cin>>emp_firstname;
+                cout<<"Enter last name: ";
+                cin>>emp_lastname;
+                cout<<"Enter position: ";
+                cin>>emp_pos;
+                cout<<"Enter password: ";
+                cin>>pass;
+                emp.register_employee(emp_firstname, emp_lastname, employee_id(), pass, emp_pos);
+                cout<<"Press enter to continue";
+                cin.ignore();
+                cin.get();
+                system("clear");
+            }else if(response==2){
+                // check products
+                emp.check_products();
+                cout<<"Press enter to continue";
+                cin.ignore();
+                cin.get();
+                system("clear");
+            }else if(response==3){
+                // buy products
+                string product_id, product_name, product_price, product_quantity;
+                cout<<"\t\t\t\tBuy products"<<endl;
+                cout<<"\t\t\t\t-------------"<<endl;
+                cout<<"Enter product id: ";
+                cin>>product_id;
+                cout<<"Enter product name: ";
+                cin>>product_name;
+                cout<<"Enter product price: ";
+                cin>>product_price;
+                cout<<"Enter product quantity: ";
+                cin>>product_quantity;
+                emp.add_product(product_id, product_name, product_price, product_quantity);
+                cout<<"Press enter to continue";
+                cin.ignore();
+                cin.get();
+                system("clear");
+            }else if(response==4){
+                // sales
+                emp.sales();
+                cout<<"Press enter to continue";
+                cin.ignore();
+                cin.get();
+                system("clear");
+            }else if(response==5){
+                // exit
+                cout<<"Exiting..."<<endl;
+                exit(0);
+            }else{
+                cout<<"\n\t\t\t\t\tInvalid option"<<endl;
+            }
+        }else{
+            cout<<"Login failed"<<endl;
+        }
     }
+    
+
+   
 }
 
 void customer(){
@@ -210,6 +227,7 @@ void customer(){
     int response;
     cout<<"\t\t\t\tCustomer"<<endl;
     cout<<"\t\t\t\t----------"<<endl;
+    
     cout<<"1.Search product"<<endl;
     cout<<"2.Exit"<<endl;
     cout<<"Enter an option: ";
@@ -254,6 +272,11 @@ void customer(){
                 if(line.find(product_name) != string::npos){
                     cout<<line<<endl;
                 }
+                else{
+                    cout<<"Product does not exist! Try again"<<endl;
+                    cout<<"Press enter to continue";
+                    cin.ignore();
+                }
             }
             file.close();
             // get product details
@@ -270,7 +293,9 @@ void customer(){
             another_file<< product_id << "," << product_name << "," << product_price << "," << product_quantity << endl;
             another_file.close();
             cout<<"Product bought successfully"<<endl;
+            sleep(.5);
             system("clear");
+
 
             // print receipt for user
             cout<<"Receipt"<<endl;
