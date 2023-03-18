@@ -143,7 +143,7 @@ void funct_emp(){
     while(getline(file, line)){
         if(line.find(emp_id) != string::npos && line.find(emp_pass) != string::npos){
             cout<<"Login successful"<<endl;
-            sleep(.5);
+            sleep(1);
             system("clear");
             
             cout<<"1. Register new employee"<<endl;
@@ -211,13 +211,9 @@ void funct_emp(){
             }else{
                 cout<<"\n\t\t\t\t\tInvalid option"<<endl;
             }
-        }else{
-            cout<<"Login failed"<<endl;
         }
     }
-    
 
-   
 }
 
 void customer(){
@@ -323,12 +319,11 @@ void customer(){
 
 string employee_id(){
     // this function generates a random employee id to assigned to each employee
-    // the id is a digit of 3 + the initials of the employee's name
-    // the initials are the first letter of the first name and the first letter of the last name
-
-    // generate a random number
-    int random_number = rand() % 1000 + 1;
-    string emp_id = to_string(random_number);
+    // first employee id is 1000
+    // last employee id is 9999
+    string emp_id;
+    int id = rand() % 9999 + 1000;
+    emp_id = to_string(id);
     return emp_id;
 }
 
