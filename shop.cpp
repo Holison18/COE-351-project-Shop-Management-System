@@ -3,7 +3,7 @@
 #include <fstream>
 #include <unistd.h>
 //Genesis
-//Bright
+//Bright here
 using namespace std;
 
 // declare an employee function
