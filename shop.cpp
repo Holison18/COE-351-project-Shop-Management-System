@@ -4,8 +4,6 @@
 #include <unistd.h>
 
 using namespace std;
-
-
 // declare a buy product function
 void buy_product();
 // declare an employee function
