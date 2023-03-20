@@ -2,9 +2,12 @@
 #include <string>
 #include <fstream>
 #include <unistd.h>
-//Genesis
+
 using namespace std;
 
+
+// declare a buy product function
+void buy_product();
 // declare an employee function
 void funct_emp();
 
@@ -86,6 +89,28 @@ class employee{
     }
 };
 
+// create a customer class
+class Customer{
+    private:
+    string username;
+    string password;
+
+    public:
+
+    void buy_product(){
+        // customer can buy product from the product list
+    }
+
+    // create a search product function
+    void search_product(string product_name){
+        // open the product.txt file and search for the product
+        fstream file;
+        
+    }
+
+    
+
+};
 
 
 // main function
@@ -216,107 +241,6 @@ void funct_emp(){
 
 }
 
-void customer(){
-    // customer can buy from the show 
-    // customer can view products to make a purchase 
-    // customer can search a product
-    int response;
-    cout<<"\t\t\t\tCustomer"<<endl;
-    cout<<"\t\t\t\t----------"<<endl;
-    
-    cout<<"1.Search product"<<endl;
-    cout<<"2.Exit"<<endl;
-    cout<<"Enter an option: ";
-    //take response from user
-    cin>>response;
-    system("clear");
-
-    if(response==1){
-        // search product
-        cout<<"\t\t\t\tSearch Product"<<endl;
-        cout<<"\t\t\t\t--------------"<<endl;
-        string product_name;
-        cout<<"Enter product name: ";
-        cin>>product_name;
-        // read from file
-        fstream file;
-        file.open("products.txt", ios::in);
-        string line;
-        while(getline(file, line)){
-            if(line.find(product_name) != string::npos){
-                cout<<line<<endl;
-            }
-        }
-        file.close();
-        
-        // now the customer can buy the product
-        // the product will be added to the sales file
-        // the product quantity will be reduced from the product file
-        // the customer will be given a receipt
-        cout<<"1. Buy product"<<endl;
-        cout<<"2. Exit"<<endl;
-        cout<<"Enter an option: ";
-        cin>>response;
-        system("clear");
-        if(response==1){
-            // buy product
-            // read from file
-            fstream file;
-            file.open("products.txt", ios::in);
-            string line;
-            while(getline(file, line)){
-                if(line.find(product_name) != string::npos){
-                    cout<<line<<endl;
-                }
-                else{
-                    cout<<"Product does not exist! Try again"<<endl;
-                    cout<<"Press enter to continue";
-                    cin.ignore();
-                }
-            }
-            file.close();
-            // get product details
-            string product_id, product_price, product_quantity;
-            cout<<"Enter product id: ";
-            cin>>product_id;
-            cout<<"Enter product price: ";
-            cin>>product_price;
-            cout<<"Enter product quantity: ";
-            cin>>product_quantity;
-            // write to file
-            fstream another_file;
-            another_file.open("sales.txt", ios::app);
-            another_file<< product_id << "," << product_name << "," << product_price << "," << product_quantity << endl;
-            another_file.close();
-            cout<<"Product bought successfully"<<endl;
-            sleep(.5);
-            system("clear");
-
-
-            // print receipt for user
-            cout<<"Receipt"<<endl;
-            cout<<"-------"<<endl;
-            cout<<"Product Id: "<<product_id<<endl;
-            cout<<"Product Name: "<<product_name<<endl;
-            cout<<"Product Price: "<<product_price<<endl;
-            cout<<"Product Quantity: "<<product_quantity<<endl;
-            cout<<"Total: "<<stoi(product_price) * stoi(product_quantity)<<endl;
-            cout<<"Thank you for shopping with us"<<endl;
-
-        }else if(response==2){
-            // exit
-            system("clear");
-            cout<<"Exiting..."<<endl;
-            cin.ignore();
-            main();
-        }
-    }else{
-        cout<<"Invalid option"<<endl;
-        customer();
-    }
-   
-}
-
 string employee_id(){
     // this function generates a random employee id to assigned to each employee
     // first employee id is 1000
@@ -326,4 +250,5 @@ string employee_id(){
     emp_id = to_string(id);
     return emp_id;
 }
+
 
