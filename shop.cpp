@@ -94,15 +94,101 @@ class Customer{
     string password;
 
     public:
+    Customer(string Username, string Pass){
+        username = Username;
+        password = Pass;
+    }
+
+    void login(){
+        // customer can login
+        // check if the username and password are in the customer.txt file
+        fstream file;
+        file.open("customer.txt", ios::in);
+        string line;
+        while(getline(file, line)){
+            if(line.find(username) != string::npos && line.find(password) != string::npos){
+                cout<<"Login successful"<<endl;
+            }
+        }
+        file.close();
+    }
+
+    void register_customer(string name,string Password){
+        // open file and add user name and password
+    }
 
     void buy_product(){
-        // customer can buy product from the product list
+        // customer can buy product from the product list   
+        string product_id;
+        float product_price;
+        int product_quantity;
+
+        // get the product id from the user
+        cout << "Enter product id: ";
+        sleep(.5);
+        cin >> product_id;
+        cout<<"Enter price of the product: ";
+        sleep(.5);
+        cin>>product_price;
+        cout<<"Enter quantity of the product: ";
+        sleep(.5);
+        cin>>product_quantity;
+
+        // add sales to the sales.txt file
+        fstream file;
+        file.open("sales.txt", ios::out | ios::app);
+        file << product_id << "," << product_price << "," << product_quantity << endl;
+        file.close();
+
+        // decrease the quantity of the product in the product.txt file
+        fstream file2;
+        file2.open("products.txt", ios::in);
+        string line;
+        while(getline(file2, line)){
+            if(line.find(product_id) != string::npos){
+                // get the quantity of the product
+                int quantity = stoi(line.substr(line.find_last_of(",") + 1));
+                // decrease the quantity
+                quantity -= product_quantity;
+                // write the new quantity to the file
+                file2 << product_id << "," << product_price << "," << quantity << endl;
+            }
+        }
+        file2.close();
+
+        system("clear");
+        sleep(.5);
+        cout << "Product bought successfully." << endl;
+        system("clear");
+        
+        sleep(.5);
+        // print receipt
+        cout << "Receipt" << endl;
+        cout << "-------" << endl;
+        sleep(.5);
+        cout << "Product id: " << product_id << endl;
+        sleep(.5);
+        cout << "Price: " << product_price << endl;
+        sleep(.5);
+        cout << "Quantity: " << product_quantity << endl;
+        sleep(.5);
+        cout << "Total: " << product_price * product_quantity << endl;
+
     }
 
     // create a search product function
     void search_product(string product_name){
         // open the product.txt file and search for the product
         fstream file;
+        file.open("products.txt", ios::in);
+        string line;
+        while(getline(file, line)){
+            if(line.find(product_name) != string::npos){
+                // print the line of the product if it is found
+                cout << line << endl;
+            }
+        }
+        file.close();
         
     }
 
@@ -134,10 +220,9 @@ int main(){
         funct_emp();
     }else if(option==2){
         // customer
-        customer();
     }else{
         cout<<"\n\t\t\t\t\tInvalid option"<<endl;
-    }
+    }buy_product();
 
 }
 
@@ -248,5 +333,6 @@ string employee_id(){
     emp_id = to_string(id);
     return emp_id;
 }
+
 
 
