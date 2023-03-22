@@ -115,6 +115,7 @@ class Customer{
 
     void register_customer(string name,string Password){
         // open file and add user name and password
+        
     }
 
     void buy_product(){
@@ -222,8 +223,7 @@ int main(){
         // customer
     }else{
         cout<<"\n\t\t\t\t\tInvalid option"<<endl;
-    }buy_product();
-
+    }
 }
 
 // create an employee function
