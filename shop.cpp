@@ -115,7 +115,6 @@ class Customer{
 
     void register_customer(string name,string Password){
         // open file and add user name and password
-        
     }
 
     void buy_product(){
