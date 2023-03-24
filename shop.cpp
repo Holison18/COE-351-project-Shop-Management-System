@@ -45,9 +45,17 @@ class employee{
     }
 
     void check_products(){
-        // print the products details
-        //
+        // staff can check the products
+        // read from file
+        fstream file;
+        file.open("products.txt", ios::in);
+        string line;
+        while(getline(file, line)){
+            cout<<line<<endl;
+        }
+        file.close();
     }
+    
 
     void add_product(string product_id, string product_name, float product_price, int product_quantity){
         // staff can buy products from dealer
@@ -291,9 +299,9 @@ void funct_emp(){
             int product_quantity;
             cout<<"\n\n\t\t\t\t\tAdd Product"<<endl;
             cout<<"Enter product name: ";
-            getline(cin, product_name);
+            cin>>product_name;
             cout<<"Enter product id: ";
-            getline(cin, product_id);
+            cin>>product_id;
             cout<<"Enter product price: ";
             cin>>product_price;
             cout<<"Enter product quantity: ";
