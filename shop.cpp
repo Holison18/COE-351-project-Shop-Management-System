@@ -1,347 +1,413 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <unistd.h>
+# include <iostream>
+# include <string>
+# include <fstream>
+# include <unistd.h>
+
 
 using namespace std;
-// declare a buy product function
-void buy_product();
-// declare an employee function
-void funct_emp();
 
-
-// declare a function to generate a random employee id
-string employee_id();
-
-class employee{
-
+// create an employee class
+class Employee{
     private:
-    string Username = "Admin";
-    string password = "admin@coe";
-    string name;
-    string emp_id;
-    string position;
-
+        string firstname;
+        string lastname;
+        string phone;
+        string hireDate;
+        string position;
+        float salary;
+        string  username;
+        string password;
     public:
-    
-    // Create a login function
-    bool login(string Name,string Password){
-        //compare name and password with the admin name and password
-        if(Name == Username && Password == password){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    // a functions to register a new employee
-    void register_employee(string first_name,string last_name,string Position,string emp_id){
-        // open the employee.txt file to add the new employee
-        fstream file;
-        file.open("employee.txt", ios::out | ios::app);
-        file<<first_name<<" | "<<last_name<<" | "<<Position<<" | "<<emp_id<<endl;
-        file.close();
-    }
-
-    void check_products(){
-        // staff can check the products
-        // read from file
-        fstream file;
-        file.open("products.txt", ios::in);
-        string line;
-        while(getline(file, line)){
-            cout<<line<<endl;
-        }
-        file.close();
-    }
-    
-
-    void add_product(string product_id, string product_name, float product_price, int product_quantity){
-        // staff can buy products from dealer
-        // bought products need to be added to the product list
-
-        // open file to add new product
-        fstream file;
-        file.open("products.txt", ios::out | ios::app);
-        
-        // write the product details to the file
-        file << product_id << " | " << product_name << " | " << product_price << " | " << product_quantity << endl;
-
-        // close the file
-        file.close();
-
-        cout << "Product added successfully." << endl;
-    }
-
-    void sales(){
-        float daily_sales = 0;
-        // staff can check daily sales
-        // read from file
-        fstream file;
-        file.open("sales.txt", ios::in);
-        string line;
-        while(getline(file, line)){
-            cout<<line<<endl;
-        }
-        file.close();
-        
-    }
-};
-
-// create a customer class
-class Customer{
-    private:
-    string username;
-    string password;
-    string name;
-
-    public:
-    void login(){
-        // customer can login
-        // check if the username and password are in the customer.txt file
-        fstream file;
-        file.open("customer.txt", ios::in);
-        string line;
-        while(getline(file, line)){
-            if(line.find(username) != string::npos && line.find(password) != string::npos){
-                cout<<"Login successful"<<endl;
+        // employee can login using username and password
+        bool login(string username, string password){
+            // check if username and password are in the csv file
+            fstream file;
+            file.open("employee.csv", ios::in);
+            string line;
+            while(getline(file, line)){
+                if(line.find(username) != string::npos && line.find(password) != string::npos){
+                    return true;
+                    break;
+                }
+                else{
+                    return false;
+                    break;
+                }
             }
         }
-        file.close();
-    }
 
-    void register_customer(string Name,string Username,string Password){
-        name = Name;
-        username = Username;
-        password = Password;
+        void registerEmployee(string firstname,string lastname, string phone, string hireDate, string position, float salary, string username, string password){
+            this->firstname = firstname;
+            this->lastname = lastname;
+            this->phone = phone;
+            this->hireDate = hireDate;
+            this->position = position;
+            this->salary = salary;
+            this->username = username;
+            this->password = password;
+            // create a csv file and save to save the details of the employee
+            fstream file;
+            file.open("employee.csv", ios::app);
+            file << firstname<<","<<lastname<< "," << phone << "," << hireDate << "," << position << "," << salary << "," << username << "," << password << endl;
+            file.close();
+        }
 
-        fstream file;
-        file.open("customer.txt", ios::out | ios::app);
-        file<<name<<","<<password<<endl;
-        file.close();
-        cout<<"Customer registered successfully"<<endl;
-    }
+        // create a function to generate a unique product id
 
-    void buy_product(){
-        // customer can buy product from the product list   
-        string product_id;
-        float product_price;
-        int product_quantity;
+        string generate_product_id(){
+            string product_id;
+            // generate a random number
+            int random_number = rand() % 1000;
+            // convert the random number to string
+            product_id = to_string(random_number);
+            return product_id;
+        }
 
-        // get the product id from the user
-        cout << "Enter product id: ";
-        sleep(.5);
-        cin >> product_id;
-        cout<<"Enter price of the product: ";
-        sleep(.5);
-        cin>>product_price;
-        cout<<"Enter quantity of the product: ";
-        sleep(.5);
-        cin>>product_quantity;
-
-        // add sales to the sales.txt file
-        fstream file;
-        file.open("sales.txt", ios::out | ios::app);
-        file << product_id << "," << product_price << "," << product_quantity << endl;
-        file.close();
-
-        // decrease the quantity of the product in the product.txt file
-        fstream file2;
-        file2.open("products.txt", ios::in);
-        string line;
-        while(getline(file2, line)){
-            if(line.find(product_id) != string::npos){
-                // get the quantity of the product
-                int quantity = stoi(line.substr(line.find_last_of(",") + 1));
-                // decrease the quantity
-                quantity -= product_quantity;
-                // write the new quantity to the file
-                file2 << product_id << "," << product_price << "," << quantity << endl;
+        // employee can add a new product
+        void add_product(string name, string product_id, float price, int quantity){
+           //check if the product id is unique
+            fstream file;
+            file.open("product.csv", ios::in);
+            string line;
+            while(getline(file, line)){
+                if(line.find(product_id) != string::npos){
+                    cout << "Product id already exists" << endl;
+                    break;
+                }
+                else{
+                    // create a csv file and save to save the details of the product
+                    fstream file;
+                    file.open("product.csv", ios::app);
+                    file << name << "," << product_id << "," << price << "," << quantity << endl;
+                    file.close();
+                    break;
+                }
             }
         }
-        file2.close();
 
-        system("clear");
-        sleep(.5);
-        cout << "Product bought successfully." << endl;
-        system("clear");
-        
-        sleep(.5);
-        // print receipt
-        cout << "Receipt" << endl;
-        cout << "-------" << endl;
-        sleep(.5);
-        cout << "Product id: " << product_id << endl;
-        sleep(.5);
-        cout << "Price: " << product_price << endl;
-        sleep(.5);
-        cout << "Quantity: " << product_quantity << endl;
-        sleep(.5);
-        cout << "Total: " << product_price * product_quantity << endl;
-
-    }
-
-    // create a search product function
-    void search_product(string product_name){
-        // open the product.txt file and search for the product
-        fstream file;
-        file.open("products.txt", ios::in);
-        string line;
-        while(getline(file, line)){
-            if(line.find(product_name) != string::npos){
-                // print the line of the product if it is found
+        // employee can view all products.
+        void view_products(){
+            fstream file;
+            file.open("product.csv", ios::in);
+            string line;
+            while(getline(file, line)){
                 cout << line << endl;
             }
+            file.close();
         }
-        file.close();
-        
-    }
+};
 
-    
+//create a customer class
+class Customer{
+    private:
+        string firstname;
+        string lastname;
+        string username;
+        string password;
+    public:
+        // customer needs to login
+        bool login(string username, string password){
+            // check if username and password are in the csv file
+            fstream file;
+            file.open("customer.csv", ios::in);
+            string line;
+            while(getline(file, line)){
+                if(line.find(username) != string::npos && line.find(password) != string::npos){
+                    return true;
+                    break;
+                }
+                else{
+                    return false;
+                    break;
+                }
+            }
+        }
 
+        // customer can register
+        void registerCustomer(string firstname,string lastname, string username, string password){
+            this->firstname = firstname;
+            this->lastname = lastname;
+            this->username = username;
+            this->password = password;
+            // create a csv file and save to save the details of the customer
+            fstream file;
+            file.open("customer.csv", ios::app);
+            file << firstname<<","<<lastname<< "," << username << "," << password << endl;
+            file.close();
+        }
+
+        // customer can view all products
+        void view_products(){
+            fstream file;
+            file.open("product.csv", ios::in);
+            string line;
+            while(getline(file, line)){
+                cout << line << endl;
+            }
+            file.close();
+        }
+
+        // customer search for a product
+        void search_product(string product_id){
+            fstream file;
+            file.open("product.csv", ios::in);
+            string line;
+            while(getline(file, line)){
+                if(line.find(product_id) != string::npos){
+                    cout << line << endl;
+                    break;
+                }
+                else{
+                    cout << "Product not found" << endl;
+                    break;
+                }
+            }
+            file.close();
+        }
+
+        // customer can make a purchase
+        void buy_product(string product_id, int quantity){
+            // check if the product is available
+            fstream file;
+            file.open("product.csv", ios::in);
+            string line;
+            while(getline(file, line)){
+                if(line.find(product_id) != string::npos){
+                    // check if the quantity is available
+                    int pos = line.find(",");
+                    string product_id = line.substr(0, pos);
+                    line.erase(0, pos + 1);
+                    pos = line.find(",");
+                    string name = line.substr(0, pos);
+                    line.erase(0, pos + 1);
+                    pos = line.find(",");
+                    float price = stof(line.substr(0, pos));
+                    line.erase(0, pos + 1);
+                    pos = line.find(",");
+                    int quantity_available = stoi(line.substr(0, pos));
+                    line.erase(0, pos + 1);
+                    if(quantity_available >= quantity){
+                        // create a csv file and save to save the details of the purchase
+                        fstream file;
+                        file.open("purchase.csv", ios::app);
+                        file << product_id << "," << name << "," << price << "," << quantity << endl;
+                        file.close();
+                        break;
+                    }
+                    else{
+                        cout << "Quantity not available" << endl;
+                        break;
+                    }
+                }
+                else{
+                    cout << "Product not found" << endl;
+                    break;
+                }
+            }
+            file.close();
+        }
 };
 
 
-// main function
 int main(){
-    // shop management system
-    int option;
-    sleep(.5);
-    cout<<"\n\n\t\t\t\tWelcome to shop management system"<<endl;
-    sleep(.5);
-    cout<<"\t\t\t\t--------------------------------"<<endl;
-    sleep(.5);
-    cout<<"\n\n1. Staff"<<endl;
-    sleep(.5);
-    cout<<"2. Customer"<<endl;
-    sleep(.5);
-    cout<<"Enter an option: ";
+    // create instances for the Employee and Customer classes
+    Employee employee;
+    Customer customer;
 
-    //take input from user
-    cin>>option;
+    // create a menu for the user to choose from
+    cout<<"\n\n\t\t\t\t\t--------------------------------------------"<<endl;
+    sleep(.5);
+    cout<<"\t\t\t\t\tWelcome to the Supermarket Management System"<<endl;
+    sleep(.5);
+    cout<<"\t\t\t\t\t--------------------------------------------"<<endl;
+    sleep(.5);
+    cout<<"[1]Staff Login"<<endl;
+    sleep(.5);
+    cout<<"[2]Customer Login"<<endl;
+    sleep(.5);
+    cout<<"[3]Register"<<endl;
+    sleep(.5);
+    cout<<"[4[Exit"<<endl;
+    sleep(.5);
+    cout<<"Enter your choice: ";
+    int choice;
+    cin>>choice;
     system("clear");
-    if(option==1){
-        // staff
-        funct_emp();
-    }else if(option==2){
-        // customer
-    }else{
-        cout<<"\n\t\t\t\t\tInvalid option"<<endl;
-    }
-}
-
-// create an employee function
-void funct_emp(){
-    // staff can register new employee
-    // check products
-    // buy products from dealer
-    // sales
-    int response;
-    // instantiate the class employee
-    employee emp;
-    
-    cout<<"\n\n\t\t\t\t\tLogin"<<endl;
-    // employee can login
-    string admin_username, admin_pass;
-    cout<<"Username: ";
-    cin>>admin_username;
-    cout<<"Password: ";
-    cin>>admin_pass;
-
-    // call the login function in the employee class
-    bool is_login = emp.login(admin_username, admin_pass);
-
-    // check if the right details were provided then proceed
-    while(is_login){
-        cout<<"Login Successful"<<endl;
-        sleep(.5);
-        system("clear");
-        int option;
-        cout<<"\n\n\t\t\t\t\tStaff"<<endl;
-        cout<<"1. Register new employee"<<endl;
-        cout<<"2. Check products"<<endl;
-        cout<<"3. Add Product"<<endl;
-        cout<<"4. Sales"<<endl;
-        cout<<"5. Logout"<<endl;
-        cout<<"Enter an option: ";
-        cin>>option;
-        system("clear");
-        if(option==1){
-            // register new employee
-            string first_name,last_name, position, emp_id;
-            cout<<"\n\n\t\t\t\t\tRegister new employee"<<endl;
-            cout<<"Enter first name: ";
-            cin>>first_name;
-            cout<<"Enter last name: ";
-            cin>>last_name;
-            cout<<"Enter position: ";
-            cin>>position;
-            // generate employee id
-            emp_id = employee_id();
-            // call the register employee function
-            emp.register_employee(first_name,last_name, position, emp_id);
-            cout<<"Employee Registered Successful"<<endl;
-            sleep(1);
-            system("clear");
-        }else if(option==2){
-            // check products
-            cout<<"\n\n\t\t\t\t\tProducts"<<endl;
-            // call the check products function
-            emp.check_products();
-            cout<<"Press enter to continue: ";
-            cin.ignore();
-            system("clear");
-        }else if(option==3){
-            // add product
-            string product_name, product_id;
-            float product_price;
-            int product_quantity;
-            cout<<"\n\n\t\t\t\t\tAdd Product"<<endl;
-            cout<<"Enter product name: ";
-            cin>>product_name;
-            cout<<"Enter product id: ";
-            cin>>product_id;
-            cout<<"Enter product price: ";
-            cin>>product_price;
-            cout<<"Enter product quantity: ";
-            cin>>product_quantity;
-            // call the add product function
-            emp.add_product(product_name, product_id, product_price, product_quantity);
+    switch(choice){
+        case 1:{
+            string username, password;
+            cout << "Enter username: ";
+            cin >> username;
             sleep(.5);
+            cout << "Enter password: ";
+            cin >> password;
             system("clear");
-        }else if(option==4){
-            // sales
-            cout<<"\n\n\t\t\t\t\tSales"<<endl;
-            // call the sales function
-            emp.sales();
             sleep(.5);
-            system("clear");
-        }else if(option==5){
-            // logout
-            cout<<"\n\n\t\t\t\t\tLogout"<<endl;
-            sleep(.5);
-            system("clear");
-            is_login = false;
-            main();
-        }else{
-            cout<<"Login Failed"<<endl;
-            cout<<"Try again"<<endl;
-            sleep(.5);
-            system("clear");
+            bool is_login = employee.login(username, password);
+            while(is_login){
+                cout << "Login successful" << endl;
+                sleep(.5);
+                system("clear");
+                cout << "[1] Add product" << endl;
+                sleep(.5);
+                cout << "[2] View products" << endl;
+                sleep(.5);
+                cout << "[3] Logout" << endl;
+                sleep(.5);
+                cout << "Enter your choice: ";
+                int choice;
+                cin >> choice;
+                system("clear");
+                switch(choice){
+                    case 1:{
+                        string name;
+                        float price;
+                        int quantity;
+                        cout << "Enter product name: ";
+                        cin >> name;
+                        cout << "Enter product price: ";
+                        cin >> price;
+                        cout << "Enter product quantity: ";
+                        cin >> quantity;
+                        string product_id = employee.generate_product_id();
+                        employee.add_product(name, product_id, price, quantity);
+                        break;
+                    }
+                    case 2:{
+                        employee.view_products();
+                        break;
+                    }
+                    case 3:{
+                        is_login = false;
+                        break;
+                    }
+                    default:{
+                        cout << "Invalid choice" << endl;
+                        break;
+                    }
+                }
+            }
+            break;
         }
-    
+        case 2:{
+            string username, password;
+            cout << "Enter username: ";
+            cin >> username;
+            cout << "Enter password: ";
+            cin >> password;
+            bool is_login = customer.login(username, password);
+            system("clear");
+            while(is_login){
+                cout << "Login successful" << endl;
+                sleep(.5);
+                system("clear");
+                cout << "[1] View products" << endl;
+                sleep(.5);
+                cout << "[2] Search product" << endl;
+                sleep(.5);
+                cout << "[3] Buy product" << endl;
+                sleep(.5);
+                cout << "[4] Logout" << endl;
+                sleep(.5);
+                cout << "Enter your choice: ";
+                int choice;
+                cin >> choice;
+                system("clear");
+                switch(choice){
+                    case 1:{
+                        customer.view_products();
+                        break;
+                    }
+                    case 2:{
+                        string product_id;
+                        cout << "Enter product id: ";
+                        cin >> product_id;
+                        customer.search_product(product_id);
+                        break;
+                    }
+                    case 3:{
+                        string product_id;
+                        int quantity;
+                        cout << "Enter product id: ";
+                        cin >> product_id;
+                        cout << "Enter quantity: ";
+                        cin >> quantity;
+                        customer.buy_product(product_id, quantity);
+                        break;
+                    }
+                    case 4:{
+                        is_login = false;
+                        break;
+                    }
+                    default:{
+                        cout << "Invalid choice" << endl;
+                        break;
+                    }
+                }
+            }
+            break;
+        }
+        case 3:{
+            cout<<"\n\n\t\t\t\t\tREGISTRATION"<<endl;
+            sleep(.5);
+            cout<<"[1] Register as New Employee"<<endl;
+            sleep(.5);
+            cout<<"[2] Register as New Customer"<<endl;
+            sleep(.5);
+            cout<<"[3] Back to Main Menu"<<endl;
+            sleep(.5);
+            cout<<"Enter your choice: ";
+            int choice;
+            cin>>choice;
+            system("clear");
+            switch(choice){
+                case 1:{
+                    string firstname,lastname,phone,hireDate,position,username,password;
+                    float salary;
+                    cout << "Enter First name: ";
+                    cin>>firstname;
+                    cout << "Enter Last name: ";
+                    cin>>lastname;
+                    cout << "Enter phone: ";
+                    cin>>phone;
+                    cout << "Enter hire date(DD/MM/YYYY): ";
+                    cin>>hireDate;
+                    cout << "Enter position: ";
+                    cin>>position;
+                    cout << "Enter salary: ";
+                    cin >> salary;
+                    cout << "Enter username: ";
+                    cin >> username;
+                    cout << "Enter password: ";
+                    cin >> password;
+                    employee.registerEmployee(firstname,lastname, phone, hireDate, position, salary, username, password);
+                    cout << "Registration successful" << endl;
+                    break;
+                }
+                case 2:{
+                    string firstname,lastname,username, password;
+                    cout << "Enter name: ";
+                    cin>>firstname;
+                    cout << "Enter Last name: ";
+                    cin>>lastname;
+                    cout << "Enter username: ";
+                    cin >> username;
+                    cout << "Enter password: ";
+                    cin >> password;
+                    customer.registerCustomer(firstname,lastname,username, password);
+                    break;
+                }
+                case 3:{
+                    break;
+                }
+                default:{
+                    cout << "Invalid choice" << endl;
+                    break;
+                }
+            }
+            break;
+        }
     }
+
+
 }
-
-string employee_id(){
-    // this function generates a random employee id to assigned to each employee
-    // first employee id is 1000
-    // last employee id is 9999
-    string emp_id;
-    int id = rand() % 9999 + 1000;
-    emp_id = to_string(id);
-    return emp_id;
-}
-
-
