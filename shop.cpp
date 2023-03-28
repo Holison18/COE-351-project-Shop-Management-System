@@ -63,13 +63,13 @@ class Employee{
         }
 
         // employee can add a new product
-        void add_product(string name, string product_id, float price, int quantity){
+        void add_product(string name, string product_id, float price, int quantity) {
             // Validate input
             if (name.empty() || product_id.empty()) {
                 cout << "Name and product ID must not be empty" << endl;
                 return;
             }
-            
+
             // Check if the product id is unique
             fstream input_file;
             input_file.open("product.csv", ios::in);
@@ -79,8 +79,8 @@ class Employee{
             }
             string line;
             bool id_exists = false;
-            while(getline(input_file, line)){
-                if(line.find(product_id) != string::npos){
+            while (getline(input_file, line)) {
+                if (line.find(product_id) != string::npos) {
                     cout << "Product id already exists" << endl;
                     id_exists = true;
                     break;
@@ -88,7 +88,23 @@ class Employee{
             }
             input_file.close();
 
-            if(!id_exists){
+            if (id_exists) {
+                // Delete all other entries and update the product price
+                fstream output_file;
+                output_file.open("product.csv", ios::out | ios::trunc);
+                if (!output_file.is_open()) {
+                    cout << "Error: could not open output file" << endl;
+                    return;
+                }
+                try {
+                    output_file << name << "," << product_id << "," << price << "," << quantity << endl;
+                    output_file.close();
+                } catch (const exception& e) {
+                    cout << "Error: " << e.what() << endl;
+                    output_file.close();
+                    return;
+                }
+            } else {
                 // Create a csv file and save the details of the product
                 fstream output_file;
                 output_file.open("product.csv", ios::app);
@@ -110,17 +126,24 @@ class Employee{
 
 
 
+
         // employee can view all products.
-        void view_products(){
+        void view_products() {
             fstream file;
             file.open("product.csv", ios::in);
             string line;
-            while(getline(file, line)){
+            if (!getline(file, line)) {
+                cout << "No products found" << endl;
+            } else {
                 cout << line << endl;
+                while (getline(file, line)) {
+                    cout << line << endl;
+                }
             }
             file.close();
         }
 };
+
 
 //create a customer class
 class Customer{
@@ -160,15 +183,21 @@ class Customer{
         }
 
         // customer can view all products
-        void view_products(){
+        void view_products() {
             fstream file;
             file.open("product.csv", ios::in);
             string line;
-            while(getline(file, line)){
+            if (!getline(file, line)) {
+                cout << "No products found" << endl;
+            } else {
                 cout << line << endl;
+                while (getline(file, line)) {
+                    cout << line << endl;
+                }
             }
             file.close();
         }
+
 
         // customer search for a product
         void search_product(string product_id){
@@ -333,7 +362,9 @@ int main(){
                 system("clear");
                 switch(choice){
                     case 1:{
+                        cout<<"Product ID\t\tProduct Name\t\tProduct Price\t\tProduct Quantity"<<endl;
                         customer.view_products();
+                        sleep(.5);
                         break;
                     }
                     case 2:{
