@@ -200,13 +200,13 @@ class Customer{
 
 
         // customer search for a product
-        void search_product(string product_id){
+        void search_product(string product_name){
             fstream file;
             file.open("product.csv", ios::in);
             string line;
             bool product_found = false;
             while(getline(file, line)){
-                if(line.find(product_id) != string::npos){
+                if(line.find(product_name) != string::npos){
                     cout << line << endl;
                     product_found = true;
                 }
@@ -217,6 +217,7 @@ class Customer{
                 cout << "Product not found" << endl;
             }
         }
+
 
 
         // customer can make a purchase
@@ -280,183 +281,187 @@ int main(){
     int choice;
     cin>>choice;
     system("clear");
-    switch(choice){
-        case 1:{
-            string username, password;
-            cout << "Enter username: ";
-            cin >> username;
+    if(choice == 1){
+        // staff login
+        string username, password;
+        cout << "Enter username: ";
+        cin >> username;
+        cout << "Enter password: ";
+        cin >> password;
+        if(employee.login(username, password)){
+            // create a menu for the employee
+            cout<<"\n\n\t\t\t\t\t--------------------------------------------"<<endl;
             sleep(.5);
-            cout << "Enter password: ";
-            cin >> password;
-            system("clear");
+            cout<<"\t\t\t\t\tWelcome to the Supermarket Management System"<<endl;
             sleep(.5);
-            bool is_login = employee.login(username, password);
-            while(is_login){
-                cout << "Login successful" << endl;
-                sleep(.5);
-                system("clear");
-                cout << "[1] Add product" << endl;
-                sleep(.5);
-                cout << "[2] View products" << endl;
-                sleep(.5);
-                cout << "[3] Logout" << endl;
-                sleep(.5);
-                cout << "Enter your choice: ";
-                int choice;
-                cin >> choice;
-                system("clear");
-                switch(choice){
-                    case 1:{
-                        string name;
-                        float price;
-                        int quantity;
-                        cout << "Enter product name: ";
-                        cin >> name;
-                        cout << "Enter product price: ";
-                        cin >> price;
-                        cout << "Enter product quantity: ";
-                        cin >> quantity;
-                        string product_id = employee.generate_product_id();
-                        employee.add_product(name, product_id, price, quantity);
-                        break;
-                    }
-                    case 2:{
-                        employee.view_products();
-                        break;
-                    }
-                    case 3:{
-                        is_login = false;
-                        break;
-                    }
-                    default:{
-                        cout << "Invalid choice" << endl;
-                        break;
-                    }
-                }
-            }
-            break;
-        }
-        case 2:{
-            string username, password;
-            cout << "Enter username: ";
-            cin >> username;
-            cout << "Enter password: ";
-            cin >> password;
-            bool is_login = customer.login(username, password);
-            system("clear");
-            while(is_login){
-                cout << "Login successful" << endl;
-                sleep(.5);
-                system("clear");
-                cout << "[1] View products" << endl;
-                sleep(.5);
-                cout << "[2] Search product" << endl;
-                sleep(.5);
-                cout << "[3] Buy product" << endl;
-                sleep(.5);
-                cout << "[4] Logout" << endl;
-                sleep(.5);
-                cout << "Enter your choice: ";
-                int choice;
-                cin >> choice;
-                system("clear");
-                switch(choice){
-                    case 1:{
-                        cout<<"Product ID\t\tProduct Name\t\tProduct Price\t\tProduct Quantity"<<endl;
-                        customer.view_products();
-                        sleep(.5);
-                        break;
-                    }
-                    case 2:{
-                        string product_id;
-                        cout << "Enter product id: ";
-                        cin >> product_id;
-                        customer.search_product(product_id);
-                        break;
-                    }
-                    case 3:{
-                        string product_id;
-                        int quantity;
-                        cout << "Enter product id: ";
-                        cin >> product_id;
-                        cout << "Enter quantity: ";
-                        cin >> quantity;
-                        customer.buy_product(product_id, quantity);
-                        break;
-                    }
-                    case 4:{
-                        is_login = false;
-                        break;
-                    }
-                    default:{
-                        cout << "Invalid choice" << endl;
-                        break;
-                    }
-                }
-            }
-            break;
-        }
-        case 3:{
-            cout<<"\n\n\t\t\t\t\tREGISTRATION"<<endl;
+            cout<<"\t\t\t\t\t--------------------------------------------"<<endl;
             sleep(.5);
-            cout<<"[1] Register as New Employee"<<endl;
+            cout<<"[1]Add Product"<<endl;
             sleep(.5);
-            cout<<"[2] Register as New Customer"<<endl;
+            cout<<"[2]View Products"<<endl;
             sleep(.5);
-            cout<<"[3] Back to Main Menu"<<endl;
+            cout<<"[3]Exit"<<endl;
             sleep(.5);
             cout<<"Enter your choice: ";
             int choice;
             cin>>choice;
             system("clear");
-            switch(choice){
-                case 1:{
-                    string firstname,lastname,phone,hireDate,position,username,password;
-                    float salary;
-                    cout << "Enter First name: ";
-                    cin>>firstname;
-                    cout << "Enter Last name: ";
-                    cin>>lastname;
-                    cout << "Enter phone: ";
-                    cin>>phone;
-                    cout << "Enter hire date(DD/MM/YYYY): ";
-                    cin>>hireDate;
-                    cout << "Enter position: ";
-                    cin>>position;
-                    cout << "Enter salary: ";
-                    cin >> salary;
-                    cout << "Enter username: ";
-                    cin >> username;
-                    cout << "Enter password: ";
-                    cin >> password;
-                    employee.registerEmployee(firstname,lastname, phone, hireDate, position, salary, username, password);
-                    cout << "Registration successful" << endl;
-                    break;
-                }
-                case 2:{
-                    string firstname,lastname,username, password;
-                    cout << "Enter name: ";
-                    cin>>firstname;
-                    cout << "Enter Last name: ";
-                    cin>>lastname;
-                    cout << "Enter username: ";
-                    cin >> username;
-                    cout << "Enter password: ";
-                    cin >> password;
-                    customer.registerCustomer(firstname,lastname,username, password);
-                    break;
-                }
-                case 3:{
-                    break;
-                }
-                default:{
-                    cout << "Invalid choice" << endl;
-                    break;
-                }
+            if(choice == 1){
+                // add product
+                string name;
+                string product_id;
+                int price;
+                int quantity;
+                cout << "Enter product name: ";
+                cin >> name;
+                cout << "Enter product id: ";
+                cin >> product_id;
+                cout << "Enter product price: ";
+                cin >> price;
+                cout << "Enter product quantity: ";
+                cin >> quantity;
+                employee.add_product(name, product_id, price, quantity);
             }
-            break;
+            else if(choice == 2){
+                // view products
+                employee.view_products();
+            }
+            else if(choice == 3){
+                // exit
+                exit(0);
+            }
+            else{
+                cout << "Invalid choice" << endl;
+            }
+        }
+        else{
+            cout << "Invalid username or password" << endl;
         }
     }
-
-
+    else if(choice == 2){
+        // customer login
+        string username, password;
+        cout << "Enter username: ";
+        cin >> username;
+        cout << "Enter password: ";
+        cin >> password;
+        if(customer.login(username, password)){
+            // create a menu for the customer
+            cout<<"\n\n\t\t\t\t\t--------------------------------------------"<<endl;
+            sleep(.5);
+            cout<<"\t\t\t\t\tWelcome to the Supermarket Management System"<<endl;
+            sleep(.5);
+            cout<<"\t\t\t\t\t--------------------------------------------"<<endl;
+            sleep(.5);
+            cout<<"[1]View Products"<<endl;
+            sleep(.5);
+            cout<<"[2]Search Product"<<endl;
+            sleep(.5);
+            cout<<"[3]Exit"<<endl;
+            sleep(.5);
+            cout<<"Enter your choice: ";
+            int choice;
+            cin>>choice;
+            system("clear");
+            if(choice == 1){
+                // view products
+                customer.view_products();
+                sleep(2);
+                cout << "Proceed to buy a product? [y/n]: ";
+                char choice;
+                cin >> choice;
+                if(choice == 'y'){
+                    string product_id;
+                    int quantity;
+                    cout << "Enter product id: ";
+                    cin >> product_id;
+                    cout << "Enter quantity: ";
+                    cin >> quantity;
+                    customer.buy_product(product_id, quantity);
+                }else{
+                    exit(0);
+                }
+            }else if(choice == 2){
+                // search product
+                string product_name;
+                cout << "Enter product name: ";
+                cin >> product_name;
+                customer.search_product(product_name);
+                sleep(2);
+                cout << "Proceed to buy a product? [y/n]: ";
+                char choice;
+                cin >> choice;
+                if(choice == 'y'){
+                    string product_id;
+                    int quantity;
+                    cout << "Enter product id: ";
+                    cin >> product_id;
+                    cout << "Enter quantity: ";
+                    cin >> quantity;
+                    customer.buy_product(product_id, quantity);
+                }else{
+                    exit(0);
+                }
+            }else if(choice == 4){
+                // exit
+                exit(0);
+            }else{
+                cout << "Invalid choice" << endl;
+            }
+        }else{
+            cout << "Invalid username or password" << endl;
+        }
+    }else if(choice == 3){
+        // register
+        cout<<"\n\n\t\t\t\t\t--------------------------------------------"<<endl;
+        cout<<"\t\t\t\t\tRegistration"<<endl;
+        cout<<"[1]]Staff"<<endl;
+        cout<<"[2]Customer"<<endl;
+        cout<<"Enter your choice: ";
+        int choice;
+        cin>>choice;
+        system("clear");
+        if(choice == 1){
+            // register staff
+            string firstname,lastname,phone,hireDate,position,username,password;
+            float salary;
+            cout << "First Name: ";
+            cin >> firstname;
+            cout << "Last Name: ";
+            cin >> lastname;
+            cout << "Phone: ";
+            cin >> phone;
+            cout << "Hire Date(DD/MM/YYYY): ";
+            cin >> hireDate;
+            cout << "Position: ";
+            cin >> position;
+            cout << "Salary: ";
+            cin >> salary;
+            cout << "Username: ";
+            cin >> username;
+            cout << "Password: ";
+            cin >> password;
+            employee.registerEmployee(firstname,lastname,phone,hireDate,position,salary,username,password);
+        }else if(choice == 2){
+            // register customer
+            string firstname,lastname,username,password;
+            cout << "First name:";
+            cin >> firstname;
+            cout << "Last name:";
+            cin >> lastname;
+            cout << "Username:";
+            cin >> username;
+            cout << "Password: ";
+            cin >> password;
+            customer.registerCustomer(firstname,lastname,username,password);
+        }else{
+            cout << "Invalid choice" << endl;
+        }
+    }else if(choice == 4){
+        // exit
+        exit(0);
+    }else{
+        cout << "Invalid choice" << endl;
+    }
 }
+   
