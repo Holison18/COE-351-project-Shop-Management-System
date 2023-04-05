@@ -305,7 +305,9 @@ int main(){
         cin >> username;
         cout << "Enter password: ";
         cin >> password;
-        if(employee.login(username, password)){
+        sleep(0.5);
+        system("clear");
+        while(employee.login(username,password)){
             // create a menu for the employee
             cout<<"\n\n\t\t\t\t\t--------------------------------------------"<<endl;
             sleep(.5);
@@ -317,7 +319,7 @@ int main(){
             sleep(.5);
             cout<<"[2]View Products"<<endl;
             sleep(.5);
-            cout<<"[3]Exit"<<endl;
+            cout<<"[3]Main Menu"<<endl;
             sleep(.5);
             cout<<"Enter your choice: ";
             int choice;
@@ -338,21 +340,28 @@ int main(){
                 cout << "Enter product quantity: ";
                 cin >> quantity;
                 employee.add_product(name, product_id, price, quantity);
+                cout<<"Product added successfully"<<endl;
+                sleep(1);
+                system("clear");
             }
             else if(choice == 2){
                 // view products
                 employee.view_products();
+                sleep(2);
+                system("clear");
             }
             else if(choice == 3){
-                // exit
-                exit(0);
+                // Return to the main menu
+                cout<<"Returning to the main menu...";
+                sleep(1);
+                system("clear");
+                main();
             }
             else{
                 cout << "Invalid choice" << endl;
+                sleep(1);
+                system("clear");
             }
-        }
-        else{
-            cout << "Invalid username or password" << endl;
         }
     }
     else if(choice == 2){
@@ -362,7 +371,9 @@ int main(){
         cin >> username;
         cout << "Enter password: ";
         cin >> password;
-        if(customer.login(username, password)){
+        sleep(0.5);
+        system("clear");
+        while(customer.login(username, password)){
             // create a menu for the customer
             cout<<"\n\n\t\t\t\t\t--------------------------------------------"<<endl;
             sleep(.5);
@@ -374,7 +385,7 @@ int main(){
             sleep(.5);
             cout<<"[2]Search Product"<<endl;
             sleep(.5);
-            cout<<"[3]Exit"<<endl;
+            cout<<"[3]Main Menu"<<endl;
             sleep(.5);
             cout<<"Enter your choice: ";
             int choice;
@@ -395,6 +406,9 @@ int main(){
                     cout << "Enter quantity: ";
                     cin >> quantity;
                     customer.buy_product(product_id, quantity);
+                    cout<<"Product Bought successfully!"<<endl;
+                    sleep(1);
+                    system("clear");
                 }else{
                     exit(0);
                 }
@@ -416,17 +430,23 @@ int main(){
                     cout << "Enter quantity: ";
                     cin >> quantity;
                     customer.buy_product(product_id, quantity);
+                    cout<<"Product Bought successfully!"<<endl;
+                    sleep(1);
+                    system("clear");
                 }else{
                     exit(0);
                 }
-            }else if(choice == 4){
-                // exit
-                exit(0);
+            }else if(choice == 3){
+                // return to main menu
+                cout<<"Returning to main menu...";
+                sleep(1);
+                system("clear");
+                main();
             }else{
                 cout << "Invalid choice" << endl;
+                sleep(1);
+                system("clear");
             }
-        }else{
-            cout << "Invalid username or password" << endl;
         }
     }else if(choice == 3){
         // register
@@ -459,6 +479,13 @@ int main(){
             cout << "Password: ";
             cin >> password;
             employee.registerEmployee(firstname,lastname,phone,hireDate,position,salary,username,password);
+            cout<<"Account Registered successfully"<<endl;
+            sleep(1);
+            system("clear");
+            cout<<"Returning to the main menu!";
+            sleep(1);
+            system("clear");
+            main();
         }else if(choice == 2){
             // register customer
             string firstname,lastname,username,password;
@@ -471,14 +498,25 @@ int main(){
             cout << "Password: ";
             cin >> password;
             customer.registerCustomer(firstname,lastname,username,password);
+            cout<<"Account Registered successfully"<<endl;
+            sleep(1);
+            system("clear");
+            cout<<"Returning to the main menu!";
+            sleep(1);
+            system("clear");
+            main();
         }else{
             cout << "Invalid choice" << endl;
+            sleep(1);
+            system("clear");
         }
     }else if(choice == 4){
         // exit
         exit(0);
     }else{
         cout << "Invalid choice" << endl;
+        sleep(1);
+        system("clear");
     }
 }
    
