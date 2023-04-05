@@ -1,9 +1,15 @@
+/*
+This is a Group project by  shop management program in C++, done as part of the course COE 351 - Object Oriented Programming
+The applicaton allows the user to either login in as a customer or an employee
+Employees can add new products and view the number of products
+The customer can view product list and search product list in order to make a purchase
+*/
+
 # include <iostream>
 # include <string>
 # include <cstdlib>
 # include <fstream>
-# include <unistd.h>
-
+# include <unistd.h> // do: #include <windows.h if you use windows and change system("clear") to system("cls")
 
 using namespace std;
 
