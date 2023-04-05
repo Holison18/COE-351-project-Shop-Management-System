@@ -3,6 +3,17 @@ This is a Group project by  shop management program in C++, done as part of the 
 The applicaton allows the user to either login in as a customer or an employee
 Employees can add new products and view the number of products
 The customer can view product list and search product list in order to make a purchase
+
+GROUP MEMBERS               INDEX NUMBER
+1.kYEI JEFFERY BAAFI        3033420
+2.KWABENA OBIRI YEBOAH      3036020
+3.KOBINA AKOFI-HOLISON      3021920
+4.SAI ABRAHAM KWESI         3039920
+5.ATTOBRAH BRIGHT           3026020
+6.NARH JUDE AKWETEY         3035120
+7.KORANTENG ENOCH KOFI      3032520
+8.LASSEY ELLIOT KOFI AKO    3033720
+
 */
 
 # include <iostream>
