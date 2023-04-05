@@ -224,9 +224,10 @@ class Customer{
         void buy_product(string product_id, int quantity){
             // check if the product is available
             fstream file;
-            // open file in write mode and update that particular product the customer buys and the quantity
+            // open file in read mode to find the product
             file.open("product.csv", ios::in);
             string line;
+            bool product_found = false;
             while(getline(file, line)){
                 if(line.find(product_id) != string::npos){
                     // get the quantity of the product
@@ -235,25 +236,41 @@ class Customer{
                     if(product_quantity >= quantity){
                         // update the quantity
                         product_quantity -= quantity;
-                        // update the file
-                        fstream file;
-                        file.open("product.csv", ios::out);
-                        file << line.substr(0, line.find_last_of(",") + 1) << product_quantity << endl;
+                        // close the file in read mode
                         file.close();
+
+                        // open file in write mode to update the product quantity
+                        fstream file;
+                        file.open("product.csv", ios::in);
+                        ofstream outfile;
+                        outfile.open("temp.csv", ios::out);
+                        while(getline(file, line)){
+                            if(line.find(product_id) != string::npos){
+                                line = line.substr(0, line.find_last_of(",") + 1) + to_string(product_quantity);
+                            }
+                            outfile << line << endl;
+                        }
+                        outfile.close();
+                        file.close();
+                        // remove the original file and rename the updated file
+                        remove("product.csv");
+                        rename("temp.csv", "product.csv");
                         cout << "Purchase successful" << endl;
+                        product_found = true;
                         break;
                     }
                     else{
                         cout << "Product not available" << endl;
+                        product_found = true;
                         break;
                     }
                 }
-                else{
-                    cout << "Product not found" << endl;
-                    break;
-                }
+            }
+            if(!product_found){
+                cout << "Product not found" << endl;
             }
         }
+
 };
 
 
