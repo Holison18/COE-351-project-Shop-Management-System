@@ -240,7 +240,7 @@ class Customer{
         }
 
         // get product price method
-        int get_product_price(string product_id){
+        float get_product_price(string product_id){
             fstream file;
             file.open("product.csv", ios::in);
             string line;
