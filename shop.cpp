@@ -612,6 +612,11 @@ int main(){
         }
     }else if(choice == 4){
         // exit
+        sleep(1);
+        cout<<"Thank you for shopping with us...\n\n";
+        cout<<"Shop with us again...\n\n";
+        sleep(1);
+        system("clear");
         exit(0);
     }else{
         cout << "Invalid choice" << endl;
