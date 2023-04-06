@@ -386,6 +386,9 @@ int main(){
             }
             else if(choice == 2){
                 // view products
+                cout << "\n\t\t\t\tProducts" << endl;
+                cout<<"\t\t--------------------------------------------"<<endl;
+                cout<<"Product\tID\tPrice\tQuantity"<<endl;
                 employee.view_products();
                 sleep(2);
                 cout<<"Press any key to continue...";
@@ -394,6 +397,9 @@ int main(){
                 system("clear");
             }else if(choice == 3){
                 // check sales
+                cout << "\n\t\t\t\tSales" << endl;
+                cout<<"\t\t--------------------------------------------"<<endl;
+                cout<<"ID\tQuantity"<<endl;
                 employee.sales_report();
                 sleep(2);
                 cout<<"Press any key to continue...";
