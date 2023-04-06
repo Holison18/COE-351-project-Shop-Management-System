@@ -443,6 +443,9 @@ int main(){
             system("clear");
             if(choice == 1){
                 // view products
+                cout << "\n\t\t\t\tProducts" << endl;
+                cout<<"\t\t--------------------------------------------"<<endl;
+                cout<<"Product\tID\tPrice\tQuantity"<<endl;
                 customer.view_products();
                 sleep(2);
                 cout << "Proceed to buy a product? [y/n]: ";
@@ -485,8 +488,9 @@ int main(){
             }else if(choice == 2){
                 // search product
                 string product_name;
-                cout << "Enter product name: ";
+                cout<<"Product Name: ";
                 cin >> product_name;
+                cout<<"Product\tID\tPrice\tQuantity"<<endl;
                 customer.search_product(product_name);
                 sleep(2);
                 cout << "Proceed to buy a product? [y/n]: ";
