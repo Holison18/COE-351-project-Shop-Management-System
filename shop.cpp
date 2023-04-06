@@ -64,19 +64,8 @@ class Employee{
             // create a csv file and save to save the details of the employee
             fstream file;
             file.open("employee.csv", ios::app);
-            file << firstname<<","<<lastname<< "," << phone << "," << hireDate << "," << position << "," << salary << "," << username << "," << password << endl;
+            file << firstname<<"\t"<<lastname<<"\t"<< phone <<"\t"<< hireDate<<"\t"<< position <<"\t"<< salary << "\t" << username << "\t" << password << endl;
             file.close();
-        }
-
-        // create a function to generate a unique product id
-
-        string generate_product_id(){
-            string product_id;
-            // generate a random number
-            int random_number = rand() % 1000;
-            // convert the random number to string
-            product_id = to_string(random_number);
-            return product_id;
         }
 
         // employee can add a new product
@@ -114,7 +103,7 @@ class Employee{
                     return;
                 }
                 try {
-                    output_file << name << "," << product_id << "," << price << "," << quantity << endl;
+                    output_file << name << "\t" << product_id << "\t" << price << "\t" << quantity << endl;
                     output_file.close();
                 } catch (const exception& e) {
                     cout << "Error: " << e.what() << endl;
@@ -130,7 +119,7 @@ class Employee{
                     return;
                 }
                 try {
-                    output_file << name << "," << product_id << "," << price << "," << quantity << endl;
+                    output_file << name << "\t" << product_id << "\t" << price << "\t" << quantity << endl;
                     output_file.close();
                 } catch (const exception& e) {
                     cout << "Error: " << e.what() << endl;
@@ -151,6 +140,21 @@ class Employee{
             string line;
             if (!getline(file, line)) {
                 cout << "No products found" << endl;
+            } else {
+                cout << line << endl;
+                while (getline(file, line)) {
+                    cout << line << endl;
+                }
+            }
+            file.close();
+        }
+
+        void sales_report() {
+            fstream file;
+            file.open("sales.csv", ios::in);
+            string line;
+            if (!getline(file, line)) {
+                cout << "No sales found" << endl;
             } else {
                 cout << line << endl;
                 while (getline(file, line)) {
@@ -195,7 +199,7 @@ class Customer{
             // create a csv file and save to save the details of the customer
             fstream file;
             file.open("customer.csv", ios::app);
-            file << firstname<<","<<lastname<< "," << username << "," << password << endl;
+            file << firstname<<"\t"<<lastname<< "\t" << username << "\t" << password << endl;
             file.close();
         }
 
@@ -235,7 +239,21 @@ class Customer{
             }
         }
 
-
+        // get product price method
+        int get_product_price(string product_id){
+            fstream file;
+            file.open("product.csv", ios::in);
+            string line;
+            int product_price = 0;
+            while(getline(file, line)){
+                if(line.find(product_id) != string::npos){
+                    product_price = stoi(line.substr(line.find_last_of("\t") - 1));
+                    break;
+                }
+            }
+            file.close();
+            return product_price;
+        }
 
         // customer can make a purchase
         void buy_product(string product_id, int quantity){
@@ -248,7 +266,7 @@ class Customer{
             while(getline(file, line)){
                 if(line.find(product_id) != string::npos){
                     // get the quantity of the product
-                    int product_quantity = stoi(line.substr(line.find_last_of(",") + 1));
+                    int product_quantity = stoi(line.substr(line.find_last_of("\t") + 1));
                     // check if the quantity is available
                     if(product_quantity >= quantity){
                         // update the quantity
@@ -263,7 +281,7 @@ class Customer{
                         outfile.open("temp.csv", ios::out);
                         while(getline(file, line)){
                             if(line.find(product_id) != string::npos){
-                                line = line.substr(0, line.find_last_of(",") + 1) + to_string(product_quantity);
+                                line = line.substr(0, line.find_last_of("\t") + 1) + to_string(product_quantity);
                             }
                             outfile << line << endl;
                         }
@@ -336,7 +354,9 @@ int main(){
             sleep(.5);
             cout<<"[2]View Products"<<endl;
             sleep(.5);
-            cout<<"[3]Main Menu"<<endl;
+            cout<<"[3]Check Sales"<<endl;
+            sleep(.5);
+            cout<<"[4]Main menu"<<endl;
             sleep(.5);
             cout<<"Enter your choice: ";
             int choice;
@@ -359,15 +379,28 @@ int main(){
                 employee.add_product(name, product_id, price, quantity);
                 cout<<"Product added successfully"<<endl;
                 sleep(1);
+                cout<<"Press any key to continue...";
+                sleep(.5);
+                cin.ignore();
                 system("clear");
             }
             else if(choice == 2){
                 // view products
                 employee.view_products();
                 sleep(2);
+                cout<<"Press any key to continue...";
+                sleep(.5);
+                cin.ignore();
+                system("clear");
+            }else if(choice == 3){
+                // check sales
+                employee.sales_report();
+                sleep(2);
+                cout<<"Press any key to continue...";
+                cin.ignore();
                 system("clear");
             }
-            else if(choice == 3){
+            else if(choice == 4){
                 // Return to the main menu
                 cout<<"Returning to the main menu...";
                 sleep(1);
@@ -426,6 +459,26 @@ int main(){
                     cout<<"Product Bought successfully!"<<endl;
                     sleep(1);
                     system("clear");
+
+                    // add purchase to sales.csv
+                    ofstream outfile;
+                    outfile.open("sales.csv", ios::app);
+                    outfile << product_id << "\t" << quantity << endl;
+                    outfile.close();
+
+                    // print receipt
+                    cout << "Printing receipt..." << endl;
+                    sleep(1);
+                    system("clear");
+                    cout << "Receipt" << endl;
+                    cout << "Product ID: " << product_id << endl;
+                    cout << "Quantity: " << quantity << endl;
+                    cout << "Total: " << quantity * customer.get_product_price(product_id) << endl;
+                    sleep(2);
+                    cout<<"Press any key to continue...";
+                    sleep(.5);
+                    cin.ignore();
+                    system("clear");
                 }else{
                     exit(0);
                 }
@@ -449,6 +502,26 @@ int main(){
                     customer.buy_product(product_id, quantity);
                     cout<<"Product Bought successfully!"<<endl;
                     sleep(1);
+                    system("clear");
+
+                    // add purchase to sales.csv
+                    ofstream outfile;
+                    outfile.open("sales.csv", ios::app);
+                    outfile << product_id << "\t" << quantity << endl;
+                    outfile.close();
+
+                    // print receipt
+                    cout << "Printing receipt..." << endl;
+                    sleep(1);
+                    system("clear");
+                    cout << "Receipt" << endl;
+                    cout << "Product ID: " << product_id << endl;
+                    cout << "Quantity: " << quantity << endl;
+                    cout << "Total: " << quantity * customer.get_product_price(product_id) << endl;
+                    sleep(2);
+                    cout<<"Press any key to continue...";
+                    sleep(.5);
+                    cin.ignore();
                     system("clear");
                 }else{
                     exit(0);
@@ -499,6 +572,9 @@ int main(){
             cout<<"Account Registered successfully"<<endl;
             sleep(1);
             system("clear");
+            cout<<"Press any key to continue...";
+            sleep(.5);
+            cin.ignore();
             cout<<"Returning to the main menu!";
             sleep(1);
             system("clear");
@@ -521,6 +597,9 @@ int main(){
             cout<<"Returning to the main menu!";
             sleep(1);
             system("clear");
+            cout<<"Press any key to continue...";
+            sleep(.5);
+            cin.ignore();
             main();
         }else{
             cout << "Invalid choice" << endl;
