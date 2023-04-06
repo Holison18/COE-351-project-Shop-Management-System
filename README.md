@@ -1,20 +1,10 @@
 # COE-351-project-Shop-Management-System
 <h2>Break down of project;</h2>
 
-<p>The projects comprises of a staff end and a customer end.
-The idea is that when a staff logs into the application he/she can
-performance admin functionalities but the customer has limited functionalities</p>
-
-<h3>Staff can;</h3>
-<ul>
-<li>Register new employee</li>
-<li>Check product list</li>
-<li>check sales</li>
-<li>Check Sales</li>
-</ul>
-
-<h3>Customer can;</h3>
-<ul>
-<li>Search a product</li>
-<li>Make a purchase</li>
-</ul>
+This is a Group project - a shop management program in C++, done as part of the course COE 351 - Object Oriented Programming
+<ol>
+<li>The applicaton allows the user to either login in as a customer or an employee</li>
+<li>Employees can add new products,view the products and check the sales of the shop</li>
+<li>The customer can view product list and search product list in order to make a purchase</li>
+<li>The user can also register either as an employee or a customer</li>
+</ol>
